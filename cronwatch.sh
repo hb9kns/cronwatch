@@ -3,7 +3,7 @@
 # 2017-02-22 YBonetti
 
 # address for warnings, you may put an external one instead of $USER
-# // BUT THEN DON'T COMMIT!
+# // BUT THEN DON'T PUSH TO REMOTE!
 wadr=${CRONWATCHADDR:-"$USER"}
 # address for regular reports (for no reporting, leave empty or comment out)
 radr=$wadr
@@ -18,8 +18,8 @@ lbcn=${CRONWATCHPUBDIR:-"$HOME/public_html/"}$bfn
 #  URL=beacon file to be checked (no whitespace!)
 # preferably put own beacon first, so that publishing is also checked locally
 #  (in that case, you may set very short max.age, as will first be updated)
-# DON'T COMMIT IF PRODUCTION DATA PRESENT!
-bcns="1 http://localhost/$bfn"
+# DON'T PUSH IF PRODUCTION DATA PRESENT!
+bcns="1 http://first-monitor.ethz.ch:880/$bfn"
 
 # report files, reset them
 warn=${TEMP:-/tmp}/cronwatchwarn.txt
