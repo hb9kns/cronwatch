@@ -117,7 +117,7 @@ done
 }
 
 # footer for report and warning
-cat <<EOT >>$tmpf
+cat <<EOT >$tmpf
 
 ---
 
