@@ -21,7 +21,7 @@ lbcn=${CRONWATCHPUBDIR:-"$HOME/public_html/"}$bfn
 # DON'T PUSH IF PRODUCTION DATA PRESENT!
 bcnlist=$HOME/cwatchlist.txt
 
-if ! -s "$bcnlist"
+if test ! -s "$bcnlist"
 then cat <<EOT
 
 ### beacon list '$bcnlist' unreadable or empty, aborting!
