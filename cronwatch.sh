@@ -19,7 +19,16 @@ lbcn=${CRONWATCHPUBDIR:-"$HOME/public_html/"}$bfn
 # preferably put own beacon first, so that publishing is also checked locally
 #  (in that case, you may set very short max.age, as will first be updated)
 # DON'T PUSH IF PRODUCTION DATA PRESENT!
-bcns="1 http://first-monitor.ethz.ch:880/$bfn"
+bcnlist=$HOME/cwatchlist.txt
+
+if ! -s "$bcnlist"
+then cat <<EOT
+
+### beacon list '$bcnlist' unreadable or empty, aborting!
+
+EOT
+ exit 1
+fi
 
 # report files, reset them
 warn=${TEMP:-/tmp}/cronwatchwarn.txt
@@ -83,8 +92,9 @@ chmod a+r $lbcn
 
 sleep 9
 
-# process beacons
-echo $bcns | { while read maxage remurl
+# process beacon list, ignore comment lines, replace '%bfn%' by $bfn
+cat $bcnlist | grep -v '^#' | sed -e "s/%bfn%/$bfn/" | {
+while read maxage remurl
 do if test $maxage -gt 0
  then
 # empty buffer

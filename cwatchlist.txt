@@ -1,0 +1,5 @@
+# sample cronwatch beacon list
+# syntax: age	URL
+# e.g:	60	http://example.com/%bfn%
+# where age is maximum age in minutes of beacon at URL, and
+# %bfn% will be replaced by $bfn as defined in cronwatch.sh
