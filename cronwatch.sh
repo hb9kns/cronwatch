@@ -1,6 +1,6 @@
 #!/bin/sh
 # update own beacon and check other published ones
-# 2017-02-22 YBonetti
+# 2017-02-28 YBonetti
 
 # address for warnings, you may put an external one instead of $USER
 # // BUT THEN DON'T PUSH TO REMOTE!
@@ -36,6 +36,10 @@ rprt=${TEMP:-/tmp}/cronwatchrprt.txt
 : > $warn
 : > $rprt
 
+# memory file, in case only daily warnings (-d flag)
+# (doesn't matter if it disappears after reboot)
+memo=${TEMP:-/tmp}/cronwatchmemo.txt
+
 # lowest permitted age difference (negative) in minutes,
 # to permit faster going remote clocks
 llim=-2
@@ -45,6 +49,8 @@ tmpf=${TEMP:-/tmp}/cronwatchtemp.txt
 
 # local current epoch time in minutes
 nowm=$(( `date -u +%s`/60 ))
+# local date
+today=`date -u '+%Y-%m-%d'`
 # local hostname for reports
 host=`hostname`
 # timeout/sec for fetching beacon files
@@ -59,12 +65,15 @@ fetchit () { wget -q -t 2 -O - -T $tout -w $tout "$1" ; }
 # should be followed only by white space and epoch time on same line
 betm='==ETM=='
 
-# flag for sending standard report
+# flag for suppressing standard report
 quiet=no
+# flag for sending warnings daily or less often
+daily=no
 
 while test "$1" != ""
 do case $1 in
  -q) quiet=yes ;;
+ -d) daily=yes ;;
  esac
  shift
 done
@@ -82,7 +91,7 @@ sendoff () {
 }
 
 # update own beacon
-
+# CAUTION: IN SOME CASES, HOSTNAME AND HOME DIRECTORY MAY BE PRIVACY RELEVANT!
 cat <<EOT >$lbcn
 `date -u` // $host $HOME
 `uptime`
@@ -94,11 +103,17 @@ sleep 9
 
 # process beacon list, ignore comment lines, replace '%bfn%' by $bfn
 cat $bcnlist | grep -v '^#' | sed -e "s/%bfn%/$bfn/" | {
+dowarn=no
+bfails=no
+# list of beacons that failed just now
+bhashes=''
 while read maxage remurl
 do if test $maxage -gt 0
  then
 # empty buffer
   : >$tmpf
+# create "hash" for this beacon
+  bhsh=`echo ":$today:$remurl" | tr -c '0-9:%/A-Za-z-' -`
 # and fetch beacon
   fetchit "$remurl" >$tmpf
 # not empty? fetching probably worked
@@ -113,6 +128,7 @@ do if test $maxage -gt 0
    then cat <<EOT >>$warn
 * age '$age' from '$remurl' out of range [$llim .. $maxage]
 EOT
+   bfails=yes
    else cat <<EOT >>$rprt
 + received age '$age' from '$remurl' is ok
 EOT
@@ -121,9 +137,35 @@ EOT
   else cat <<EOT >>$warn
 * no beacon available from '$remurl' at `date -u`
 EOT
+   bfails=yes
+  fi
+# did this beacon already fail today?
+  if grep $bshs $memo >/dev/null 2>&1
+  then cat <<EOT >>$rprt
+* problem with '$remurl' today
+EOT
+# this is 1st time today
+  else if test $bfails = yes
+# any beacon fails 1st time today? warn!
+   then dowarn=yes
+# add to list of failing beacons
+    bhashes="$bhashes
+$bhsh"
+   else cat <<EOT >>$rprt
++ '$remurl' works again
+EOT
+   fi
   fi
  fi # skip beacon if maxage<=0
 done
+
+# save list of beacons failing today
+echo "$bhashes" >$memo
+
+# suppress warning, if only daily, and nothing failed just now
+if test $daily = yes -a $dowarn = no
+then : > $warn
+fi
 }
 
 # footer for report and warning
@@ -142,6 +184,7 @@ cat $tmpf >>$rprt
 if test $quiet = no
 then sendoff "cronwatch report" $radr <$rprt
 fi
+# only send non-empty warnings
 if test -s $warn
 then
  cat $tmpf >>$warn
