@@ -84,7 +84,7 @@ sendoff () {
 # update own beacon
 
 cat <<EOT >$lbcn
-`date -u` // $host
+`date -u` // $host $HOME
 `uptime`
 $betm $nowm
 EOT
