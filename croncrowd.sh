@@ -87,21 +87,21 @@ eval bfn="$bfn"
 eval lbcn="$lbcn"
 
 # report files, reset them
-warn=${TEMP:-/tmp}/cronwatchwarn.txt
-rprt=${TEMP:-/tmp}/cronwatchrprt.txt
+warn=${TEMP:-/tmp}/croncrowdwarn.txt
+rprt=${TEMP:-/tmp}/croncrowdrprt.txt
 : > $warn
 : > $rprt
 
 # memory file, in case only daily warnings (-d flag)
 # (doesn't matter if it disappears after reboot)
-memo=${TEMP:-/tmp}/cronwatchmemo.txt
+memo=${TEMP:-/tmp}/croncrowdmemo.txt
 
 # lowest permitted age difference (negative) in minutes,
 # to permit faster going remote clocks
 llim=-2
 
 # temporary buffer file -- there should only ever be one anyway!
-tmpf=${TEMP:-/tmp}/cronwatchtemp.txt
+tmpf=${TEMP:-/tmp}/croncrowdtemp.txt
 
 # local current epoch time in minutes
 nowm=$(( `date -u +%s`/60 ))
@@ -236,11 +236,11 @@ EOT
 cat $tmpf >>$rprt
 
 if test $quiet = no
-then sendoff "cronwatch report" $radr <$rprt
+then sendoff "croncrowd report" $radr <$rprt
 fi
 # only send non-empty warnings
 if test -s $warn
 then
  cat $tmpf >>$warn
- sendoff "cronwatch WARNING" $wadr <$warn
+ sendoff "croncrowd WARNING" $wadr <$warn
 fi
