@@ -136,7 +136,7 @@ sendoff () {
 # update own beacon
 # privacy relevant data must be explicitly permitted
 if test $sensitive = yes
-then cat <<EOT >>$lbcn
+then cat <<EOT >$lbcn
 // $host $HOME
 `uptime`
 `date -u`
@@ -183,13 +183,13 @@ do if test $maxage -gt 0
 EOT
    bfail=yes
    else cat <<EOT >>$rprt
-+ received age '$age' from '$remurl' is ok
++ age '$age' from '$remurl' is ok
 EOT
    bfail=no
    fi
 # nothing received? remote probably down, fail for sure
   else cat <<EOT >>$warn
-* no beacon available from '$remurl' at `date -u`
+- no beacon available from '$remurl' at `date -u`
 EOT
    bfail=yes
   fi
