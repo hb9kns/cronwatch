@@ -113,7 +113,8 @@ host=`hostname`
 tout=9
 # command for fetching arg.1 to stdout
 # (you may need to modify depending on the tool available)
-fetchit () { wget -q -t 2 -O - -T $tout -w $tout "$1" ; }
+# forget about certificate checking -- low security needed here
+fetchit () { wget --no-check-certificate -q -t 2 -O - -T $tout -w $tout "$1" ; }
 
 # do not change anything below!
 
