@@ -32,7 +32,7 @@ options:
 	uptime, host name and current home directory
  (In most cases, once everything works, options -d and -q are useful.)
 
-configfile contains lines with following structures:
+configfile lines (keywords are not case sensitive):
  BEACON mm url
    mm=max.age in minutes for following URL (0=skip)
    url=beacon file to be checked (no whitespace!)
@@ -42,6 +42,7 @@ configfile contains lines with following structures:
  REPORT addr : for regular report messages (same as WARN if missing)
  BDIR path : local writable publication path for own beacon
  BFILE name : (inactive, see source code)
+ (other keywords are ignored, i.e '#' for comments is ok)
 
 EOH
  exit
@@ -84,14 +85,6 @@ eval wadr="$wadr"
 eval radr="$radr"
 eval bfn="$bfn"
 eval lbcn="$lbcn"
-
-cat <<TTT
-wadr=$wadr
-radr=$radr
-bfn=$bfn
-lbcn=$lbcn
-TTT
-exit
 
 # report files, reset them
 warn=${TEMP:-/tmp}/cronwatchwarn.txt
