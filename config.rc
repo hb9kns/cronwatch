@@ -1,0 +1,11 @@
+# croncrowd configuration file
+warn	root
+report	$USER+croncrowd
+bdir	$HOME/public_html
+# cronwatch beacon list
+# syntax: age	URL
+# where age is maximum age in minutes of beacon at URL, and
+# %bfn% will be replaced by $bfn as defined in the script
+beacon	9	http://www.example.com/%bfn%
+beacon	300	http://www.example.org/subdir/%bfn%
+beacon	600	http://www.example.net/~user/%bfn%
