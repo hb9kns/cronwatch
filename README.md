@@ -1,7 +1,5 @@
-# cronwatch
+# cronwatch script
 
 mutual crontab/beacon monitor
 
-_create a local branch with modified script according to your needs,
-work from there, pull master if updates are available, and merge into
-local branch_
+_please see source, and help when script is run without arguments!_
