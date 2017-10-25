@@ -118,7 +118,7 @@ tout=9
 # (you may need to modify depending on the tool available)
 # forget about certificate checking -- low security needed here
 # fetchit () { wget --no-check-certificate -q -t 2 -O - -T $tout -w $tout "$1" ; }
-fetchit () { lynx -dump -connect_timeout=$tout -nolist -notitle -read_timeout=$tout "$1" ; }
+fetchit () { lynx -source -connect_timeout=$tout -nolist -notitle -read_timeout=$tout "$1" ; }
 
 # do not change anything below!
 
