@@ -135,10 +135,11 @@ _See script source code, if you want to set this active._
 ### Installation
 
 1. create `.croncrowd` (or whatever you prefer for the configuration file name) as discussed above
-2. install cronjob for `sh croncrowd.sh -q -d $HOME/.croncrowd`
+2. if you prefer using e.g `wget` instead of `lynx` to fetch beacon data, please modify the definition of the `fetchit` function
+3. install cronjob for `sh croncrowd.sh -q -d $HOME/.croncrowd`
    (with options and config file location according to your preferences)
-3. for testing, you can of course launch the script also directly e.g `sh croncrowd.sh .croncrowd`
+4. for testing, you can of course launch the script also directly e.g `sh croncrowd.sh .croncrowd`
 
 ---
 
-_(2017-Mar, YCB)_
+_(2017-Oct, YCB)_
