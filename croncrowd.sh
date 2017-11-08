@@ -119,7 +119,7 @@ fetchit () { wget --no-check-certificate -q -t 2 -O - -T $tout -w $tout "$1" ; }
 # do not change anything below!
 
 # marker for beacon epoch time (only non-special chars for grep/sed, no ';')
-# should be followed only by white space and epoch time on same line
+# should be followed only by white space or colon, and epoch time on same line
 betm='==ETM=='
 
 # send stdin to address in arg.2 (or stderr if empty/missing)
@@ -145,8 +145,9 @@ EOT
 else : > $lbcn
 fi
 # in any case display time stamp
+# (no whitespace behind marker to prevent line break)
 cat <<EOT >>$lbcn
-$betm $nowm
+$betm:$nowm
 EOT
 chmod a+r $lbcn
 
@@ -173,8 +174,8 @@ do if test $maxage -gt 0
 # not empty? fetching probably worked
   if test -s $tmpf
   then
-# get last line with marker, remove leading marker and whitespace
-   rt=`grep $betm $tmpf 2>/dev/null | tail -n 1 | sed -e "s;.*$betm[ 	]*;;"`
+# get last line with marker, remove leading marker and colon/whitespace
+   rt=`grep $betm $tmpf 2>/dev/null | tail -n 1 | sed -e "s;.*$betm[: 	]*;;"`
 # allow only numbers, and set to 0 if missing
    rt=`echo $rt | tr -c -d '0-9'`
    age=$(( $nowm-${rt:-0} ))
