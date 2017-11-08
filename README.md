@@ -21,6 +21,10 @@ in the past.  Based on that, it can generate and send a report (if
 all is fine) or a warning message to a receiving address, to alert
 you or keep you informed.
 
+*Note: versions before 2017-11-08 are not compatible with newer ones!*
+Please update all instances to the new version, otherwise missing
+beacons will be reported by old version instances.
+
 ### files
 
 - `croncrowd.sh` is the script itself; it should work with any common shell
@@ -141,4 +145,4 @@ _See script source code, if you want to set this active._
 
 ---
 
-_(2017-Mar, YCB)_
+_(2017-Nov, YCB)_

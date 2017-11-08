@@ -23,7 +23,7 @@ if test "$cfgf" = ""
 then cat <<EOH
 
 usage: $0 [opt] <config>
- (2017-03-01, YCB)
+ (2017-11-08, YCB)
 
 options:
  -d	only warn daily: if a beacon failed already today, don't warn again
