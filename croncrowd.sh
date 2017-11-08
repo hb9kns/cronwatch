@@ -86,22 +86,25 @@ eval radr="$radr"
 eval bfn="$bfn"
 eval lbcn="$lbcn"
 
+# base for temporary and report files
+tfbase=${TEMP:-/tmp}/croncrowdX$USER
+
 # report files, reset them
-warn=${TEMP:-/tmp}/croncrowdwarn.txt
-rprt=${TEMP:-/tmp}/croncrowdrprt.txt
+warn=$tfbase-warn.txt
+rprt=$tfbase-rprt.txt
 : > $warn
 : > $rprt
 
 # memory file, in case only daily warnings (-d flag)
 # (doesn't matter if it disappears after reboot)
-memo=${TEMP:-/tmp}/croncrowdmemo.txt
+memo=$tfbase-memo.txt
 
 # lowest permitted age difference (negative) in minutes,
 # to permit faster going remote clocks
 llim=-2
 
-# temporary buffer file -- there should only ever be one anyway!
-tmpf=${TEMP:-/tmp}/croncrowdtemp.txt
+# temporary buffer file -- there should only ever be one!
+tmpf=$tfbase-temp.txt
 
 # local current epoch time in minutes
 nowm=$(( `date -u +%s`/60 ))
@@ -114,7 +117,8 @@ tout=9
 # command for fetching arg.1 to stdout
 # (you may need to modify depending on the tool available)
 # forget about certificate checking -- low security needed here
-fetchit () { wget --no-check-certificate -q -t 2 -O - -T $tout -w $tout "$1" ; }
+# fetchit () { wget --no-check-certificate -q -t 2 -O - -T $tout -w $tout "$1" ; }
+fetchit () { lynx -source -connect_timeout=$tout -nolist -notitle -read_timeout=$tout "$1" ; }
 
 # do not change anything below!
 
@@ -170,7 +174,11 @@ do if test $maxage -gt 0
 # create "hash" for this beacon
   bhsh=`echo ":$today:$remurl" | tr -c '0-9:%/A-Za-z-' -`
 # and fetch beacon
+### for debugging
+##echo ::::: $remurl >>$tmpf.raw
   fetchit "$remurl" >$tmpf
+##cat $tmpf >>$tmpf.raw
+##echo :---: >>$tmpf.raw
 # not empty? fetching probably worked
   if test -s $tmpf
   then
