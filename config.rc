@@ -8,4 +8,4 @@ bdir	$HOME/public_html
 # %bfn% will be replaced by $bfn as defined in the script
 beacon	9	http://www.example.com/%bfn%
 beacon	300	http://www.example.org/subdir/%bfn%
-beacon	600	http://www.example.net/~user/%bfn%
+beacon	600	gopher://example.net/1/~user/%bfn%
