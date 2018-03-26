@@ -8,6 +8,8 @@ quiet=no
 daily=no
 # display sensitive data
 sensitive=no
+# default beacon file name
+bfn=cronbeacon.html
 
 while test "$1" != ""
 do case $1 in
@@ -23,7 +25,7 @@ if test "$cfgf" = ""
 then cat <<EOH
 
 usage: $0 [opt] <config>
- (2017-11-08, YCB)
+ (2018-03-26, YCB)
 
 options:
  -d	only warn daily: if a beacon failed already today, don't warn again
@@ -36,12 +38,12 @@ configfile lines (keywords are not case sensitive):
  BEACON mm url
    mm=max.age in minutes for following URL (0=skip)
    url=beacon file to be checked (no whitespace!)
-   preferably put own beacon first, to immediately check local beacon as well
-   (in that case, you may set very short max.age, as will first be updated)
+   put own beacon first with low mm, to immediately check local beacon
+   ('%bfn%' in url will be replaced by BFILE, see below)
  WARN addr : email address (or user name) for warn messages
  REPORT addr : for regular report messages (same as WARN if missing)
  BDIR path : local writable publication path for own beacon
- BFILE name : (inactive, see source code)
+ BFILE name : (inactive, see source; currently '$bfn')
  (other keywords are ignored, i.e '#' for comments is ok)
 
 EOH
