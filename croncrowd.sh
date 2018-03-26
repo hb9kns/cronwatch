@@ -119,9 +119,9 @@ tout=9
 # command for fetching arg.1 to stdout
 # (you may need to modify depending on the tool available)
 # forget about certificate checking -- low security needed here
-fetchit () { wget --no-check-certificate -q -t 2 -O - -T $tout -w $tout "$1" ; }
+#fetchit () { wget --no-check-certificate -q -t 2 -O - -T $tout -w $tout "$1" ; }
 #fetchit () { curl -k -m $tout -s "$1" ; }
-#fetchit () { lynx -source -connect_timeout=$tout -nolist -notitle -read_timeout=$tout "$1" ; }
+fetchit () { lynx -source -connect_timeout=$tout -nolist -notitle -read_timeout=$tout "$1" ; }
 
 # do not change anything below!
 

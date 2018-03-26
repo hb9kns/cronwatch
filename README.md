@@ -1,6 +1,6 @@
 # cronwatch script
 
-_also see source code and help by running script without arguments_
+_also see source code and usage info (by running script without arguments)_
 
 ## `croncrowd.sh`
 
@@ -13,9 +13,9 @@ If you have more than one machine at your disposal for cronjobs,
 they can monitor each other,
 and this is where `croncrowd.sh` comes into play. 
 
-`croncrowd.sh` runs on each participating machine, publishes (on
-some externally accessible and www-served directory) a short beacon
-file, tries to get the corresponding beacon file from all other
+`croncrowd.sh` runs on each participating machine, publishes (in
+some externally accessible directory) a short beacon file,
+tries to get the corresponding beacon file from all other
 machines, and checks whether their timestamps are not too distant
 in the past.  Based on that, it can generate and send a report (if
 all is fine) or a warning message to a receiving address, to alert
@@ -70,8 +70,8 @@ of the remote `croncrowd.sh` script.
 If mm is 0, this particular beacon will not be checked at all.
 
 url is the location where the remote beacon file can be accessed.
-Only HTTP(S) has been tested as protocol. The url should not contain
-any whitespace.
+Only HTTP(S) and gopher have been tested as protocol (with lynx).
+The url should not contain any whitespace.
 
 `%bfn%` in url will be replaced by the beacon file name (see `BFILE`)
 as defined by the script.
@@ -122,6 +122,9 @@ _See script source code, if you want to set this active._
   for the arguments to `WARN, REPORT, BDIR, BFILE,`
   as these will be processed by `eval` shell command.
 - All other keywords are ignored, therefore you can use e.g '#' or ';' or '%' for comment lines.
+- The format of `BFILE` is not HTML but plain text, even if the default
+  name says so. The suffix `.html` helps with most HTTP servers,
+  but for the script itself, it is irrelevant.
 
 #### Example
 
@@ -134,16 +137,16 @@ _See script source code, if you want to set this active._
 	beacon	9	http://localhost/%bfn%
 	beacon	3600	http://www.example.org/%bfn%
 	# ignore the following (max.age=0)
-	beacon	0	http://www.nowhere.net/%bfn%
+	beacon	0	gopher://www.nowhere.net/0/%bfn%
 
 ### Installation
 
 1. create `.croncrowd` (or whatever you prefer for the configuration file name) as discussed above
-2. if you prefer using e.g `lynx` instead of `wget` to fetch beacon data, please modify the definition of the `fetchit` function
+2. if you prefer using e.g `wget` instead of `lynx` to fetch beacon data, please modify the definition of the `fetchit` function
 3. install cronjob for `sh croncrowd.sh -q -d $HOME/.croncrowd`
    (with options and config file location according to your preferences)
 4. for testing, you can of course launch the script also directly e.g `sh croncrowd.sh .croncrowd`
 
 ---
 
-_(2017-Nov, YCB)_
+_(2018-Mar, HB9KNS)_
