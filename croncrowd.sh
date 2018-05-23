@@ -96,6 +96,7 @@ warn=$tfbase-warn.txt
 rprt=$tfbase-rprt.txt
 : > $warn
 : > $rprt
+chmod 600 $warn $rprt
 
 # memory file, in case only daily warnings (-d flag)
 # (doesn't matter if it disappears after reboot)
@@ -174,6 +175,7 @@ do if test $maxage -gt 0
  then
 # empty buffer
   : > $tmpf
+  chmod 600 $tmpf
 # create "hash" for this beacon
   bhsh=`echo ":$today:$remurl" | tr -c '0-9:%/A-Za-z-' -`
 # and fetch beacon
@@ -228,6 +230,7 @@ done
 
 # save list of beacons failing today
 echo "$bhashes" >$memo
+chmod 600 $memo
 
 # suppress warning, if only daily, and nothing failed just now
 if test $daily = yes -a $dowarn = no
