@@ -89,7 +89,7 @@ eval bfn="$bfn"
 eval lbcn="$lbcn"
 
 # base for temporary and report files
-tfbase=${TEMP:-/tmp}/croncrowdX$USER
+tfbase=${TMPDIR:-/tmp}/croncrowdX$USER
 
 # report files, reset them
 warn=$tfbase-warn.txt
