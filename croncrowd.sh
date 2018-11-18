@@ -25,7 +25,7 @@ if test "$cfgf" = ""
 then cat <<EOH
 
 usage: $0 [opt] <config>
- (2018-03-26, YCB)
+ (2018-11-18 // HB9KNS)
 
 options:
  -d	only warn daily: if a beacon failed already today, don't warn again
@@ -42,6 +42,7 @@ configfile lines (keywords are not case sensitive):
    ('%bfn%' in url will be replaced by BFILE, see below)
  WARN addr : email address (or user name) for warn messages
  REPORT addr : for regular report messages (same as WARN if missing)
+   ('.' addresses suppress emails and instead report to STDERR)
  BDIR path : local writable publication path for own beacon
  BFILE name : (inactive, see source; currently '$bfn')
  (other keywords are ignored, i.e '#' for comments is ok)
@@ -64,7 +65,7 @@ fi
 getlines () { grep -i "^$1" "$2" | sed -e 's/[^	 ]*[ 	]*//' ; }
 
 # address for warnings, you may put an external one instead of $USER
-# to use as default // BUT THEN DON'T PUSH TO REMOTE!
+# to use as default // BUT THEN DON'T GIT PUSH TO REMOTE!
 wadr=`getlines WARN "$cfgf"|tail -n 1`
 wadr=${wadr:-"$USER"}
 # address for regular reports (for no reporting, leave empty or comment out)
@@ -133,7 +134,7 @@ betm='==ETM=='
 # send stdin to address in arg.2 (or stderr if empty/missing)
 # with subject in arg.1
 sendoff () {
- if test "$2" = ""
+ if test "$2" = "" -o "$2" = "."
 # no recipients, then to stderr
  then
   echo "# $1" >&2

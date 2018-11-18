@@ -88,6 +88,8 @@ be treated as failure, generating a warning message from the script.
 
 Address (or user name) to receive warning messages by e-mail.
 If undefined, `$USER` will be used instead.
+`.` as address will suppress warn messages and instead report to STDERR.
+(Useful on a purely passive host only meant to show a beacon.)
 
 If option `-d` is given, warnings for a beacon will be suppressed,
 if there were already warnings sent out the same day.
@@ -96,6 +98,7 @@ if there were already warnings sent out the same day.
 
 Address (or user name) to receive report messages by e-mail.
 If undefined, the argument to `WARN` will be used instead.
+`.` as address will suppress report messages and instead report to STDERR.
 
 Report messages are sent at each run, unless suppressed with option `-q`
 as discussed above.
@@ -149,4 +152,4 @@ _See script source code, if you want to set this active._
 
 ---
 
-_(2018-Mar, HB9KNS)_
+_(2018-11-18 // HB9KNS)_
