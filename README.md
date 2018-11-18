@@ -119,6 +119,10 @@ _See script source code, if you want to set this active._
 
 `cronbeacon.html` is the default name.
 
+It is a simple text file, but the default carries a `.html` extension
+for historical reasons, as certain servers or clients work better with a
+"harmless" file type.
+
 #### Notes
 
 - You may use local shell variables like `$HOME` or `$USER` etc
